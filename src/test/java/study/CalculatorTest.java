@@ -3,13 +3,11 @@ package study;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Scanner;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Calculator {
+public class CalculatorTest {
 
-    @Test
     public void 문자열계산기() throws Exception {
         // given
         // Scanner scanner = new Scanner(System.in); // 2 + 3 * 4 / 2
@@ -40,5 +38,21 @@ public class Calculator {
         }
         // then
         assertThat(result).isEqualTo(10);
+    }
+
+    @Test
+    void testCalculate() {
+        Calculator calculator = new Calculator();
+        String input = "2 + 3 * 4 / 2";
+        int result = calculator.calculate(input);
+        assertEquals(10, result);
+    }
+
+    @Test
+    void testCalculateWithNegativeNumber() {
+        Calculator calculator = new Calculator();
+        String input = "2 + -3 * 4 / 2";
+        int result = calculator.calculate(input);
+        assertEquals(-4, result);
     }
 }
