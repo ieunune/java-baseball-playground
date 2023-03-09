@@ -6,13 +6,78 @@ public class AppMain {
 
     public static void main(String[] args) {
 
+        // init
+        int game_size = 3;
+
+        // input playerNumbers
         Scanner input = new Scanner(System.in);
         System.out.print("숫자를 입력해 주세요 : ");
         String playerNumbers = input.next();
-        System.out.println("playerNumbers = " + playerNumbers);
-        String computerNumbers = new Computer(3).generateNumber();
-        System.out.println("computerNumbers = " + computerNumbers);
 
+        // validation
+        validation(playerNumbers);
+
+        if (playerNumbers.length() > 3) {
+            System.out.println("이번 게임의 자릿수 는 " + game_size + " 입니다.");
+        }
+
+        // Auto set numbers For Computer
+        String computerNumbers = new Computer(game_size).generateNumber();
+
+        // Log
+        System.out.println("playerNumbers = " + playerNumbers + ", computerNumbers = " + computerNumbers);
+
+        // play games
+        int strike = 0;
+        int ball = 0;
+        int[] player = getStringToIntArray(playerNumbers);
+        int[] computer = getStringToIntArray(computerNumbers);
+
+        for (int i = 0 ; i < game_size; ++i) {
+            if (player[i] == computer[i]) {
+                strike++;
+            }
+            for (int j = 0; j < computer.length; j++) {
+                if (player[i] == computer[j] && i != j) {
+                    ball++;
+                    break;
+                }
+            }
+        }
+
+        if (strike == 3) {
+            System.out.println("3스트라이크");
+        }
+
+    }
+
+    private static void validation(String playerNumbers) {
+        for (char c : playerNumbers.toCharArray()) {
+            isNumber(c);
+            if (c == '0') {
+                System.out.println("0 값은 입력할 수 없습니다.");;
+            }
+        }
+    }
+
+    private static boolean isNumber(char c) {
+        boolean isNumber = true;
+        if (!Character.isDigit(c)) {
+            System.out.println("입력한 값은 숫자가 아닙니다.");;
+            isNumber = false;
+        }
+
+        return isNumber;
+    }
+
+    public static int[] getStringToIntArray(String str) {
+        char[] charArray = str.toCharArray();
+        int[] intArray = new int[charArray.length];
+        for (int i = 0; i < charArray.length; i++) {
+            intArray[i] = charArray[i] - '0';
+        }
+
+        return intArray;
     }
 }
 /**
