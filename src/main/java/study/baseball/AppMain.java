@@ -7,51 +7,76 @@ public class AppMain {
     public static void main(String[] args) {
 
         // init
-        int game_size = 3;
-
-        // input playerNumbers
-        Scanner input = new Scanner(System.in);
-        System.out.print("숫자를 입력해 주세요 : ");
-        String playerNumbers = input.next();
-
-        // validation
-        validation(playerNumbers);
-
-        if (playerNumbers.length() > 3) {
-            System.out.println("이번 게임의 자릿수 는 " + game_size + " 입니다.");
-        }
-
+        int gameSize = 3;
         // Auto set numbers For Computer
-        String computerNumbers = new Computer(game_size).generateNumber();
+        String computerNumbers = new Computer(gameSize).generateNumber();
 
-        // Log
-        System.out.println("playerNumbers = " + playerNumbers + ", computerNumbers = " + computerNumbers);
+        while (true) {
 
-        // play games
-        int strike = 0;
-        int ball = 0;
-        int[] player = getStringToIntArray(playerNumbers);
-        int[] computer = getStringToIntArray(computerNumbers);
+            // input playerNumbers
+            Scanner input = new Scanner(System.in);
+            System.out.print("숫자를 입력해 주세요 : ");
+            String playerNumbers = input.next();
 
-        for (int i = 0 ; i < game_size; ++i) {
-            if (player[i] == computer[i]) {
-                strike++;
+            // validation
+            validation(playerNumbers, gameSize);
+
+            // Log
+            System.out.println("playerNumbers = " + playerNumbers + ", computerNumbers = " + computerNumbers);
+
+            // play games
+            int strike = 0;
+            int ball = 0;
+            int[] player = getStringToIntArray(playerNumbers);
+            int[] computer = getStringToIntArray(computerNumbers);
+
+            for (int i = 0 ; i < gameSize; ++i) {
+                if (player[i] == computer[i]) {
+                    strike++;
+                }
+                for (int j = 0; j < computer.length; j++) {
+                    if (player[i] == computer[j] && i != j) {
+                        ball++;
+                        break;
+                    }
+                }
             }
-            for (int j = 0; j < computer.length; j++) {
-                if (player[i] == computer[j] && i != j) {
-                    ball++;
+
+            if (strike == 3) {
+                System.out.println("3스트라이크");
+                System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+                System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
+                input = new Scanner(System.in);
+                System.out.print("입력 : ");
+                int inputValue = input.nextInt();
+                if (inputValue == 1) {
+                    computerNumbers = new Computer(gameSize).generateNumber();
+                }
+
+                if (inputValue == 2) {
                     break;
                 }
             }
+
+            System.out.printf("%s 스트라이크 %s 볼 %n", strike, ball);
+
+            if (strike == 0 & ball == 0) {
+                System.out.println("낫싱");
+            }
         }
 
-        if (strike == 3) {
-            System.out.println("3스트라이크");
-        }
+
 
     }
 
-    private static void validation(String playerNumbers) {
+    private static void validation(String playerNumbers, Integer gameSize) {
+
+        // 자릿수 검증
+        if (playerNumbers.length() > gameSize) {
+            System.out.println("이번 게임의 자릿수 는 " + gameSize + " 입니다.");
+        }
+
+        // 입력 값
         for (char c : playerNumbers.toCharArray()) {
             isNumber(c);
             if (c == '0') {
