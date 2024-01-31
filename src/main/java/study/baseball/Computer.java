@@ -5,13 +5,17 @@ import java.util.Random;
 public class Computer {
 
     /// Fields
-    int size = 3; // default 3
-
+    private final int size; // default 3
+    private final String computerNumbers;
     /// Constructor
     public Computer(int size) {
         this.size = size;
+        this.computerNumbers = generateNumber();
     }
 
+    public String getComputerNumbers() {
+       return this.computerNumbers;
+    }
     /// Method
     public String generateNumber() {
         // 필요한 객체 선언
