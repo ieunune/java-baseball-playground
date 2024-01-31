@@ -5,9 +5,14 @@ import java.util.Random;
 public class Computer {
 
     /// Fields
-    private final int size; // default 3
-    private final String computerNumbers;
+    private int size; // default 3
+    private String computerNumbers;
     /// Constructor
+
+    public Computer() {
+        this.computerNumbers = generateNumber();
+    }
+
     public Computer(int size) {
         this.size = size;
         this.computerNumbers = generateNumber();

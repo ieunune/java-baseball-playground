@@ -1,7 +1,5 @@
 package study.baseball;
 
-import java.util.Scanner;
-
 public class Game {
 
     private final Player player;
@@ -14,9 +12,6 @@ public class Game {
 
     public void start() {
 
-        // Auto set numbers For Computer
-        String computerNumbers = computer.getComputerNumbers();
-
         while (true) {
 
             // input playerNumbers
@@ -26,59 +21,26 @@ public class Game {
             validation(player.getPlayerNumbers(), GameOption.GAME_SIZE.getOption());
 
             // Log
-            // System.out.println("playerNumbers = " + playerNumbers + ", computerNumbers = " + computerNumbers);
+            System.out.println("playerNumbers = " + player.getPlayerNumbers() + ", computerNumbers = " + computer.getComputerNumbers());
 
             // play games
-            int strike = 0;
-            int ball = 0;
-            int[] playerNumber = getStringToIntArray(player.getPlayerNumbers());
-            int[] computerNumber = getStringToIntArray(computerNumbers);
+            GameResult gameResult = new GameResult();
+            gameResult.compare(player.getPlayerNumbers(), computer.getComputerNumbers());
 
-            GameResult result = getGameResult(strike, ball, playerNumber, computerNumber);
+            if (gameResult.isGameEnd()) {
+                boolean isContinue = gameResult.isContinue();
 
-            if (result.strike == GameOption.THREE_STRIKE.getOption()) {
-                System.out.println("3스트라이크");
-                System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
-                System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
-                Scanner input = new Scanner(System.in);
-                System.out.print("입력 : ");
-                int inputValue = input.nextInt();
-                if (inputValue == GameOption.RESTART.getOption()) {
-                    computerNumbers = new Computer(GameOption.GAME_SIZE.getOption()).generateNumber();
-                }
-
-                if (inputValue == GameOption.GAME_END.getOption()) {
+                if (isContinue) {
+                    new Computer();
+                } else {
                     break;
                 }
             }
 
-            System.out.printf("%s 스트라이크 %s 볼 %n", result.strike, result.ball);
-
-            if (result.strike == 0 & result.ball == 0) {
-                System.out.println("낫싱");
-            }
         }
     }
 
-    private static GameResult getGameResult(int strike, int ball, int[] playerNumber, int[] computerNumber) {
-        for (int i = 0; i < GameOption.GAME_SIZE.getOption(); ++i) {
-            if (playerNumber[i] == computerNumber[i]) {
-                strike++;
-            }
-            ball = checkBall(ball, playerNumber, computerNumber, i);
-        }
-        return new GameResult(strike, ball);
-    }
 
-    private static int checkBall(int ball, int[] playerNumber, int[] computerNumber, int i) {
-        for (int j = 0; j < computerNumber.length; j++) {
-            if (playerNumber[i] == computerNumber[j] && i != j) {
-                ball++;
-                break;
-            }
-        }
-        return ball;
-    }
 
     private static void validation(String playerNumbers, Integer gameSize) {
 
@@ -88,11 +50,11 @@ public class Game {
         }
 
         // 입력 값
-        for (char c : playerNumbers.toCharArray()) {
-            if (isNumber(c) || c == '0') {
-                System.out.println("0 값은 입력할 수 없습니다.");
-            }
-        }
+//        for (char c : playerNumbers.toCharArray()) {
+//            if (isNumber(c) || c == '0') {
+//                System.out.println("0 값은 입력할 수 없습니다.");
+//            }
+//        }
     }
 
     private static boolean isNumber(char c) {
@@ -103,15 +65,7 @@ public class Game {
         return true;
     }
 
-    public static int[] getStringToIntArray(String str) {
-        char[] charArray = str.toCharArray();
-        int[] intArray = new int[charArray.length];
-        for (int i = 0; i < charArray.length; i++) {
-            intArray[i] = charArray[i] - '0';
-        }
 
-        return intArray;
-    }
 
 
 }
