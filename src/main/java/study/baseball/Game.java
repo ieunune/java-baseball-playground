@@ -2,8 +2,8 @@ package study.baseball;
 
 public class Game {
 
-    private final Player player;
-    private final Computer computer;
+    private Player player;
+    private Computer computer;
 
     public Game(Player player, Computer computer) {
         this.player = player;
@@ -31,7 +31,7 @@ public class Game {
                 boolean isContinue = gameResult.isContinue();
 
                 if (isContinue) {
-                    new Computer();
+                    computer = new Computer(GameOption.GAME_SIZE.getOption());
                 } else {
                     break;
                 }

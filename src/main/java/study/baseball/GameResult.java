@@ -73,7 +73,7 @@ public class GameResult {
         for (int i = 0; i < charArray.length; i++) {
             intArray[i] = charArray[i] - '0';
         }
-
+        
         return intArray;
     }
 
